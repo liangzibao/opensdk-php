@@ -12,7 +12,7 @@ include __DIR__ . '/src/LZBRsa.php';
 include __DIR__ . '/src/LZBCurl.php';
 
 // 创建保单
-$serviceName = 'lzb.policy.create';  //创建保单
+$serviceName = 'lzb.ride.policy.create';  //创建保单
 
 // bizContent;
 $bizContent = [
@@ -59,6 +59,7 @@ $requestData = [
 // 加签
 $sign = $rsa->genSign($requestData, LZBConfig::$merPrivateKey);
 $requestData['sign'] = $sign;
+error_log(http_build_query($requestData));
 
 // 请求LZB服务器
 $result = LZBCurl::request(LZBConfig::$url, $requestData, LZBCurl::POST);

@@ -33,6 +33,7 @@ class LZBCurl{
         if(curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200){
             throw new Exception("The SDK request error: ". $response);
         }
+        error_log(var_export(curl_getinfo($ch), true));
         curl_close($ch);
 
         return json_decode($response, true);
