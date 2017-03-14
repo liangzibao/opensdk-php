@@ -1,0 +1,18 @@
+{
+    "name": "liangzibao/opensdk-php",
+    "description": "php library for openapi and openweb in liangzibao",
+    "type": "library",
+    "authors": [
+        {
+            "name": "liangzibao",
+            "email": "public@liangzibao.cn"
+        }
+    ],
+    "version": "1.0.0",
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-4": {"LZB\\": "library/LZB"}
+    }
+}
