@@ -18,7 +18,9 @@ class Client {
 
     public function __set($name,$value){
         $innerName = "_".$name;
-        $this->$innerName = $value;
+        if (isset($this->$innerName)) {
+            $this->$innerName = $value;
+        }
     }
 
     public function __get($name){
