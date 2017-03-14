@@ -2,6 +2,7 @@
     "name": "liangzibao/opensdk-php",
     "description": "php library for openapi and openweb in liangzibao",
     "type": "library",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "liangzibao",
@@ -12,6 +13,6 @@
         "php": ">=5.3.0"
     },
     "autoload": {
-        "psr-4": {"LZB\\": "library/LZB"}
+        "psr-4": {"LZB\\": "lib/LZB"}
     }
 }
