@@ -99,7 +99,6 @@ class RSAHelper {
         $str = json_encode($params);
         $str = stripslashes($str);
         $ret = openssl_verify($str, base64_decode($sign), $publicKeyId, 'sha1WithRSAEncryption');
-
         openssl_free_key($publicKeyId);
 
         return $ret;

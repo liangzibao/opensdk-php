@@ -2,6 +2,6 @@
 
 namespace LZB\Exception;
 
-class SignVerificationError extends Exception {
+class SignVerificationError extends \Exception {
 
 }

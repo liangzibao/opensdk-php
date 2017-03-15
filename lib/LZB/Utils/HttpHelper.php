@@ -20,7 +20,7 @@ class HttpHelper {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 
-        if ($method == self::POST) {
+        if ($method == self::HTTP_POST) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         } else {
             $url .= '?' . http_build_query($params);

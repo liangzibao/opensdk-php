@@ -2,6 +2,6 @@
 
 namespace LZB\Exception;
 
-class ResponseError extends Exception {
+class ResponseError extends \Exception {
 
 }

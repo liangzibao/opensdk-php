@@ -56,18 +56,18 @@ class Client {
             "timestamp" => time(),
             "bizContent" => $bizContent 
         );
-    
+
         $sign = Utils\RSAHelper::genSign($publicParams, $this->_privateKey);
         $publicParams["sign"] = $sign;
 
         $res = Utils\HttpHelper::request($this->_baseUrl, $publicParams);
         
         if ( !isset($res["ret_code"]) 
-            && $res["ret_code"] != 200) {
+            || $res["ret_code"] != 200) {
             throw new Exception\ResponseError($res["ret_msg"], $res["ret_code"]);
         } 
 
-        if (!Utils\RSAHelper::checkSign($res, $sign, $this->_lzbPublicKey)) {
+        if (!Utils\RSAHelper::checkSign($res, $res["sign"], $this->_lzbPublicKey)) {
             throw new Exception\SignVerificationError("response signature fails to verify");
         }
 
