@@ -44,7 +44,7 @@ class Client {
     }
 
     public function invoke($serviceName, $bizParams) {
-        $bizContent = Utils\RSAHelper::encrypt($bizParam, $this->_lzbPublicKey);
+        $bizContent = Utils\RSAHelper::encrypt($bizParams, $this->_lzbPublicKey);
 
         $publicParams = array (
             "serviceName" => $serviceName,

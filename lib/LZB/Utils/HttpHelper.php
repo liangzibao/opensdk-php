@@ -10,7 +10,7 @@ class HttpHelper {
     const HTTP_POST = 'POST';
     const HTTP_GET = 'GET';
 
-    public static function request($url, $params, $method = self::POST) {
+    public static function request($url, $params, $method = self::HTTP_POST) {
         $ch = curl_init();
 
         $headers['User-Agent'] = self::USER_AGENT;
