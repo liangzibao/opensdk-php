@@ -44,11 +44,38 @@ class Client {
     }
 
     public function invoke($serviceName, $bizParams) {
+        $bizContent = Utils\RSAHelper::encrypt($bizParam, $this->_lzbPublicKey);
 
+        $publicParams = array (
+            "serviceName" => $serviceName,
+            "appKey" => $this->_appKey,
+            "version" => $this->_version,
+            "format" => $this->_format,
+            "charset" => $this->_charset,
+            "signType" => $this->_signType,
+            "timestamp" => time(),
+            "bizContent" => $bizContent 
+        );
+    
+        $sign = Utils\RSAHelper::genSign($publicParams, $this->_privateKey);
+        $publicParams["sign"] = $sign;
+
+        $res = Utils\HttpHelper::request($this->_baseUrl, $publicParams);
+        
+        if ( !isset($res["ret_code"]) 
+            && $res["ret_code"] != 200) {
+            throw new Exception\ResponseError($res["ret_msg"], $res["ret_code"]);
+        } 
+
+        if (!Utils\RSAHelper::checkSign($res, $sign, $this->_lzbPublicKey)) {
+            throw new Exception\SignVerificationError("response signature fails to verify");
+        }
+
+        return Utils\RSAHelper::decrypt($res["bizContent"], $this->_privateKey);
     }
 
     public function buildRequestUrl($bizParams) {
-
+        return Utils\HttpHelper::buildRequestUrl($this->_baseUrl, $bizParams);
     }
 
 }
