@@ -48,7 +48,7 @@ class Client {
 
         $publicParams = array (
             "serviceName" => $serviceName,
-            "appKey" => $this->_appKey,
+            "app_key" => $this->_appKey,
             "version" => $this->_version,
             "format" => $this->_format,
             "charset" => $this->_charset,
