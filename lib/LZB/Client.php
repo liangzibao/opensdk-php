@@ -10,10 +10,21 @@ class Client {
 
     private $_lzbPublicKey;
 
-    public function __construct($baseUrl, $privateKey, $lzbPublicKey) {
+    private $_appKey;
+
+    private $_version = "1.0.0";
+
+    private $_format = "JSON";
+
+    private $_charset = "UTF-8";
+
+    private $_signType = "RSA";
+
+    public function __construct($baseUrl, $privateKey, $lzbPublicKey, $appKey) {
         $this->_baseUrl = $baseUrl;
         $this->_privateKey = $privateKey;
         $this->_lzbPublicKey = $lzbPublicKey;
+        $this->_appKey = $appKey;
     }
 
     public function __set($name,$value){

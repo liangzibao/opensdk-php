@@ -1,5 +1,7 @@
 <?php
 
+namespace LZB\Utils;
+
 class HttpHelper {
 
     const USER_AGENT = "LZB/Openapi SDK/v1.0.0(PHP)";
@@ -8,7 +10,7 @@ class HttpHelper {
     const HTTP_POST = 'POST';
     const HTTP_GET = 'GET';
 
-    static public function request($url, $params, $method = self::POST){
+    public static function request($url, $params, $method = self::POST) {
         $ch = curl_init();
 
         $headers['User-Agent'] = self::USER_AGENT;
@@ -26,11 +28,11 @@ class HttpHelper {
         curl_setopt($ch, CURLOPT_URL, $url);
 
         $response = curl_exec($ch);
-        if(curl_errno($ch)){
+        if (curl_errno($ch)){
             throw new Exception("The SDK request error: ". curl_error($ch));
         }
 
-        if(curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200){
+        if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200){
             throw new Exception("The SDK request error: ". $response);
         }
         curl_close($ch);
@@ -38,4 +40,8 @@ class HttpHelper {
         return json_decode($response, true);
     }
     
+    public static function buildRequestUrl($url, $params) {
+        return $url . '?' . http_build_query($params);
+    }
+
 }

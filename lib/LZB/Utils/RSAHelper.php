@@ -1,5 +1,7 @@
 <?php
 
+namespace LZB\Utils;
+
 class RSAHelper {
 
     /**
@@ -7,14 +9,14 @@ class RSAHelper {
      * 
      * @param $params 待加密参数
      * @param $publicKey 商户公钥
-    */
-    public function encrypt($params, $publicKey){
-        $rawData = json_encode($this->_filterParam($params));
+     */
+    public static function encrypt($params, $publicKey){
+        $rawData = json_encode(self::_filterParam($params));
 
         $list = [];
         $step = 117;
 
-        $publicKey = $this->_getKey($publicKey);
+        $publicKey = self::_getKey($publicKey);
         for($i = 0, $len = strlen($rawData); $i < $len; $i += $step){
             $data = substr($rawData, $i, $step);
             $encryted = '';
@@ -30,8 +32,8 @@ class RSAHelper {
      *
      * @param $encrytedData 待解密参数
      * @param $privateKey LZB私钥
-    **/
-    public function decrypt($encrytedData, $privateKey){
+     */
+    public static function decrypt($encrytedData, $privateKey){
         $encrytedData = base64_decode($encrytedData);
 
         $list = [];
@@ -40,7 +42,7 @@ class RSAHelper {
             $step = 256;
         }
 
-        $privateKey = $this->_getKey($privateKey);
+        $privateKey = self::_getKey($privateKey);
         for($i = 0, $len = strlen($encrytedData); $i < $len; $i += $step){
             $data = substr($encrytedData, $i, $step);
             $decrypted = '';
@@ -58,14 +60,14 @@ class RSAHelper {
      * @param $params 待加签参数
      * @param $privateKey LZB私钥
      */
-    public function genSign($params, $privateKey){
-        $params = $this->_filterParam($params);
+    public static function genSign($params, $privateKey){
+        $params = self::_filterParam($params);
         ksort($params);
         $signStr = json_encode($params);
         $signStr = stripslashes($signStr);
 
 
-        $privateKey = $this->_getKey($privateKey);
+        $privateKey = self::_getKey($privateKey);
         $privateKeyId = openssl_get_privatekey($privateKey);
         openssl_sign($signStr, $data, $privateKeyId);
         openssl_free_key($privateKeyId);
@@ -80,14 +82,14 @@ class RSAHelper {
      * @param $sign 检验字符串
      * @param $publicKey 商户公钥
      */
-    public function checkSign($params, $sign, $publicKey){
-        $params = $this->_filterParam($params);
+    public static function checkSign($params, $sign, $publicKey){
+        $params = self::_filterParam($params);
         if(isset($params['sign'])){
             unset($params['sign']);
         }
         ksort($params);
 
-        $publicKey = $this->_getKey($publicKey);
+        $publicKey = self::_getKey($publicKey);
 
         $publicKeyId = openssl_get_publickey($publicKey);
         if(!$publicKeyId){
@@ -103,17 +105,17 @@ class RSAHelper {
         return $ret;
     }
 
-    private function _getKey($key){
+    private static function _getKey($key){
         if(is_file($key)){
             return file_get_contents($key);
         }
         return $key;
     }
     
-    private function _filterParam($params){
+    private static function _filterParam($params){
         foreach($params as $key => $val){
             if(is_array($val)){
-                $params[$key] = $this->_filterParam($val);
+                $params[$key] = self::_filterParam($val);
             }elseif(empty($val) && $val !== 0){
                 unset($params[$key]);
                 continue;
