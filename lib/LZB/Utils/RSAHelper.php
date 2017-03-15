@@ -1,6 +1,6 @@
 <?php
 
-class RSACodec {
+class RSAHelper {
 
     /**
      * 加密
