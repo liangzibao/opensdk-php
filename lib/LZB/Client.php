@@ -47,14 +47,14 @@ class Client {
         $bizContent = Utils\RSAHelper::encrypt($bizParams, $this->_lzbPublicKey);
 
         $publicParams = array (
-            "serviceName" => $serviceName,
+            "service_name" => $serviceName,
             "app_key" => $this->_appKey,
             "version" => $this->_version,
             "format" => $this->_format,
             "charset" => $this->_charset,
-            "signType" => $this->_signType,
+            "sign_type" => $this->_signType,
             "timestamp" => time(),
-            "bizContent" => $bizContent 
+            "biz_content" => $bizContent 
         );
 
         $sign = Utils\RSAHelper::genSign($publicParams, $this->_privateKey);
@@ -71,7 +71,7 @@ class Client {
             throw new Exception\SignVerificationError("response signature fails to verify");
         }
 
-        return Utils\RSAHelper::decrypt($res["bizContent"], $this->_privateKey);
+        return Utils\RSAHelper::decrypt($res["biz_content"], $this->_privateKey);
     }
 
     public function buildRequestUrl($bizParams) {
