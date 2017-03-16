@@ -87,7 +87,22 @@ class Client {
     }
 
     public function buildRequestUrl($bizParams) {
-        return Utils\HttpHelper::buildRequestUrl($this->_baseUrl, $bizParams);
+        $bizContent = Utils\RSAHelper::encrypt($bizParams, $this->_lzbPublicKey);
+
+        $publicParams = array (
+            "app_key" => $this->_appKey,
+            "version" => $this->_version,
+            "format" => $this->_format,
+            "charset" => $this->_charset,
+            "sign_type" => $this->_signType,
+            "timestamp" => time(),
+            "biz_content" => $bizContent
+        );
+
+        $sign = Utils\RSAHelper::genSign($publicParams, $this->_privateKey);
+        $publicParams["sign"] = $sign;
+
+        return Utils\HttpHelper::buildRequestUrl($this->_baseUrl, $publicParams);
     }
 
 }
