@@ -3,7 +3,6 @@
 
 ## API接入例子
 <pre><code>
-
 $baseUrl = "对应环境的API网关URL";
 
 $appKey = "量子保为开发者分配的app_key";
@@ -35,7 +34,6 @@ try {
 
 ## HTML5 URL生成例子
 <pre><code>
-
 $baseUrl = "对应环境的HTML5网关URL";
 
 $appKey = "量子保为开发者分配的app_key";
