@@ -32,6 +32,14 @@ class Client {
 
     private $_signType = "RSA";
 
+    /**
+     * 量子保开放平台接口封装
+     *
+     * @param string $baseUrl 网关调用URL，不同环境该URL不同
+     * @param string $privateKey 开发者密钥对的私钥，用于对公共请求参数做签名，和对业务API参数做解密
+     * @param string $lzbPublicKey 量子保开放平台对外公钥，用于对公共响应参数做验签，和对业务API请求参数做加密
+     * @param string $appKey 量子保开放平台为开发者分配的唯一标识
+     */
     public function __construct($baseUrl, $privateKey, $lzbPublicKey, $appKey) {
         $this->_baseUrl = $baseUrl;
         $this->_privateKey = $privateKey;
@@ -55,6 +63,16 @@ class Client {
         return null;
     }
 
+    /**
+     * 应用调用
+     *
+     * @param string $serviceName 业务API名称
+     * @param array $bizParams 业务API请求参数表
+     * @return array 返回业务API响应参数表，JSON对象
+     * @throws Exception 网络传输层错误异常
+     * @throws LZB\Exception\SignVerificationError 响应报文签名验证失败
+     * @throws LZB\Exception\ResponseError 调用失败异常
+     */
     public function invoke($serviceName, $bizParams) {
         $bizContent = Utils\RSAHelper::encrypt($bizParams, $this->_lzbPublicKey);
 
@@ -86,6 +104,12 @@ class Client {
         return Utils\RSAHelper::decrypt($res["biz_content"], $this->_privateKey);
     }
 
+    /**
+     * 生成GET方式完整的调用的URL，仅用于标准HTML5页面接入
+     *
+     * @param array $bizParams 业务API请求参数表
+     * @return string 完整调用URL，可以直接用于浏览器或者开发平台的Webview
+     */
     public function buildRequestUrl($bizParams) {
         $bizContent = Utils\RSAHelper::encrypt($bizParams, $this->_lzbPublicKey);
 
