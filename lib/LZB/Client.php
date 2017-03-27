@@ -97,11 +97,7 @@ class Client {
             throw new Exception\ResponseError($res["ret_msg"], $res["ret_code"]);
         } 
 
-        if (!Utils\RSAHelper::checkSign($res, $res["sign"], $this->_lzbPublicKey)) {
-            throw new Exception\SignVerificationError("response signature fails to verify");
-        }
-
-        return Utils\RSAHelper::decrypt($res["biz_content"], $this->_privateKey);
+        return $this->verifySignature($res);
     }
 
     /**
@@ -129,4 +125,19 @@ class Client {
         return Utils\HttpHelper::buildRequestUrl($this->_baseUrl, $publicParams);
     }
 
+    /**
+     * 验证参数签名，提取业务参数列表，并返回。
+     * 该方法通常在处理回调接口场景中使用
+     *
+     * @param array commonParams 公共请求参数列表，包括签名
+     * @return 业务参数列表
+     * @throws LZB\Exception\SignVerificationError 公共参数签名验证失败
+     */
+    public function verifySignature($commonParams) {
+        if (!Utils\RSAHelper::checkSign($commonParams, $commonParams["sign"], $this->_lzbPublicKey)) {
+            throw new Exception\SignVerificationError("response signature fails to verify");
+        }
+
+        return Utils\RSAHelper::decrypt($res["biz_content"], $this->_privateKey);       
+    }
 }
