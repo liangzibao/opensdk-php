@@ -135,7 +135,7 @@ class Client {
      */
     public function verifySignature($commonParams) {
         if (!Utils\RSAHelper::checkSign($commonParams, $commonParams["sign"], $this->_lzbPublicKey)) {
-            throw new Exception\SignVerificationError("response signature fails to verify");
+            throw new Exception\SignVerificationError("Signature fails to verify");
         }
 
         return Utils\RSAHelper::decrypt($commonParams["biz_content"], $this->_privateKey);       
