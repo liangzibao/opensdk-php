@@ -92,16 +92,16 @@ try {
 
     //处理回调信息，返回ret_code为200
     ...
-    result["ret_code"] = 200;
+    $result["ret_code"] = 200;
 } catch (Exception $e) {
     //处理签名失败，返回错误
     ...
-    result["ret_code"] = 410; //自定义，非200
-    result["ret_msg"] = "Fail to verify the signature"; //自定义出错信息
+    $result["ret_code"] = 410; //自定义，非200
+    $result["ret_msg"] = "Fail to verify the signature"; //自定义出错信息
 }
 
 //输出响应报文
 header('Content-type: application/json');
-echo json_encode(result);
+echo json_encode($result);
 
 </code></pre>
