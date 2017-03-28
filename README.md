@@ -101,6 +101,7 @@ try {
 }
 
 //输出响应报文
-...
+header('Content-type: application/json');
+echo json_encode(result);
 
 </code></pre>
