@@ -138,6 +138,11 @@ class Client {
             throw new Exception\SignVerificationError("Signature fails to verify");
         }
 
-        return Utils\RSAHelper::decrypt($commonParams["biz_content"], $this->_privateKey);       
+        $ret_params = Utils\RSAHelper::decrypt($commonParams["biz_content"], $this->_privateKey);       
+        if ($ret_params === false) {
+            throw new Exception\DecryptCommonParamsError("Fail to decrypt biz_content");
+        }
+
+        return $ret_params;
     }
 }

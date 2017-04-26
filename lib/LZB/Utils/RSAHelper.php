@@ -59,7 +59,11 @@ class RSAHelper {
             $data = substr($encrytedData, $i, $step);
             $decrypted = '';
 
-            openssl_private_decrypt($data, $decrypted, $privateKey);
+            $ret = openssl_private_decrypt($data, $decrypted, $privateKey);
+            if (!$ret) {
+                return false;
+            }            
+
             $list[] = $decrypted;
         }
 
