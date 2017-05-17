@@ -24,6 +24,10 @@ try {
     //请参考业务API文档，进行数组的组装
     $bizParams = array();
 
+    //添加上传图片,请参考业务API文档,设置上传图片
+    $attachments = new LZB\Component\Attachments;
+    $attachments->setAttachment("图片变量名", "图片路径");
+
     $result = $client->invoke($serviceName, $bizParams);
     print_r($result);
 } catch (Exception $e) {
