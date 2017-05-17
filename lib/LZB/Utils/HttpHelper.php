@@ -31,7 +31,19 @@ class HttpHelper {
 
         //upload the attachment files
         if (!empty($withAttachments)) {
-            $params = array_merge($params, $withAttachments->getAttachmentList());
+            $attachmentList = $withAttachments->getAttachmentList();
+            foreach ($attachmentList as $k => $v) {
+                if (is_array($v)) {
+                    for ($i = 0; $i < count($v); ++$i) {
+                        $name = $k."[".$i."]";
+                        $params[$name] = $v[$i];
+                    }
+
+                    unset($attachmentList[$k]);
+                }
+            }
+
+            $params = array_merge($params, $attachmentList);
         }
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);

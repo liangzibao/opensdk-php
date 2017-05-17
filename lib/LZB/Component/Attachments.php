@@ -17,8 +17,8 @@ namespace LZB\Component;
 class Attachments {
     
     private $_attachmentList = array();
-    
-    public function setAttachment($name, $filepath) {
+   
+    public function addAttachment($name, $filepath) {
         $filepath = trim($filepath);
         if (empty($name)
             || empty($filepath)) {
@@ -31,7 +31,16 @@ class Attachments {
             $uploadFile = '@'.realpath($filepath);
         }
 
-        $this->_attachmentList[$name] = $uploadFile;
+        if (!isset($this->_attachmentList[$name])) {
+            $this->_attachmentList[$name] = $uploadFile;
+        } elseif (is_array($this->_attachmentList[$name])) {
+            $this->_attachmentList[$name][] = $uploadFile;
+        } else {
+            $oldUploadFile = $this->_attachmentList[$name];
+            unset($this->_attachmentList[$name]);
+            $this->_attachmentList[$name][] = $oldUploadFile;
+            $this->_attachmentList[$name][] = $uploadFile;
+        }
         return;
     }
 
