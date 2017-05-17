@@ -19,8 +19,9 @@ class Attachments {
     private $_attachmentList = array();
     
     public function setAttachment($name, $filepath) {
+        $filepath = trim($filepath);
         if (empty($name)
-            && empty(trim($filepath))) {
+            || empty($filepath)) {
             return;
         }
 
