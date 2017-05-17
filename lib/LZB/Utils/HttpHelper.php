@@ -19,10 +19,7 @@ class HttpHelper {
     const USER_AGENT = "LZB/Openapi SDK/v1.1.0(PHP)";
     const CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
 
-    const HTTP_POST = 'POST';
-    const HTTP_GET = 'GET';
-
-    public static function request($url, $params, $method = self::HTTP_POST) {
+    public static function request($url, $params, $withAttachments = null) {
         $ch = curl_init();
 
         $headers['User-Agent'] = self::USER_AGENT;
@@ -30,22 +27,23 @@ class HttpHelper {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($ch, CURLOPT_POST, 1);
 
-        if ($method == self::HTTP_POST) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-        } else {
-            $url .= '?' . http_build_query($params);
+        //upload the attachment files
+        if (!empty($withAttachments)) {
+            $params = array_merge($params, $withAttachments->getAttachmentList());
         }
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         curl_setopt($ch, CURLOPT_URL, $url);
 
         $response = curl_exec($ch);
         if (curl_errno($ch)){
-            throw new Exception("The SDK request error: ". curl_error($ch));
+            throw new \Exception("The SDK request error: ". curl_error($ch));
         }
 
         if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200){
-            throw new Exception("The SDK request error: ". $response);
+            throw new \Exception("The SDK request error: ". $response);
         }
         curl_close($ch);
 

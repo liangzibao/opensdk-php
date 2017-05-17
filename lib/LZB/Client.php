@@ -68,12 +68,13 @@ class Client {
      *
      * @param string $serviceName 业务API名称
      * @param array $bizParams 业务API请求参数表
+     * @param LZB\Component\Attachments $withAttachments 上传文件表，不参与加密和签名
      * @return array 返回业务API响应参数表，JSON对象
      * @throws Exception 网络传输层错误异常
      * @throws LZB\Exception\SignVerificationError 响应报文签名验证失败
      * @throws LZB\Exception\ResponseError 调用失败异常
      */
-    public function invoke($serviceName, $bizParams) {
+    public function invoke($serviceName, $bizParams, $withAttachments = null) {
         $bizContent = Utils\RSAHelper::encrypt($bizParams, $this->_lzbPublicKey);
 
         $publicParams = array (
@@ -90,7 +91,7 @@ class Client {
         $sign = Utils\RSAHelper::genSign($publicParams, $this->_privateKey);
         $publicParams["sign"] = $sign;
 
-        $res = Utils\HttpHelper::request($this->_baseUrl, $publicParams);
+        $res = Utils\HttpHelper::request($this->_baseUrl, $publicParams, $withAttachments);
         
         if ( !isset($res["ret_code"]) 
             || $res["ret_code"] != 200) {
