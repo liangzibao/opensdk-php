@@ -28,7 +28,7 @@ try {
     $attachments = new LZB\Component\Attachments;
     $attachments->setAttachment("图片变量名", "图片路径");
 
-    $result = $client->invoke($serviceName, $bizParams);
+    $result = $client->invoke($serviceName, $bizParams, $attachments);
     print_r($result);
 } catch (Exception $e) {
     print_r($e);
