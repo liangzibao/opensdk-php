@@ -16,7 +16,7 @@ namespace LZB\Utils;
 
 class HttpHelper {
 
-    const USER_AGENT = "LZB/Openapi SDK/v1.1.0(PHP)";
+    const USER_AGENT = "LZB/Openapi SDK/v1.2.0(PHP)";
     const CONTENT_TYPE = "application/x-www-form-urlencoded;charset=utf-8";
 
     public static function request($url, $params, $withAttachments = null) {
