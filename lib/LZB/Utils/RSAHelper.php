@@ -131,7 +131,7 @@ class RSAHelper {
         foreach($params as $key => $val){
             if(is_array($val)){
                 $params[$key] = self::_filterParam($val);
-            }elseif(empty($val) && $val !== 0){
+            }elseif(empty($val) && !is_numeric($val)){
                 unset($params[$key]);
                 continue;
             }else{
